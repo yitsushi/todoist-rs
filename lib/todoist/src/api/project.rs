@@ -65,6 +65,19 @@ impl Client<'_> {
             }
         }
     }
+
+    pub async fn collaborators(&self, id: String) -> Result<Vec<models::Collaborator>, Error> {
+        match self.api_client.get(format!("/projects/{}/collaborators", id)).await {
+            Err(err) => Err(Error::RequestError(err.to_string())),
+            Ok(None) => Ok(vec![]),
+            Ok(Some(text)) => {
+                match serde_json::from_str(&text) {
+                    Ok(collaborators) => Ok(collaborators),
+                    Err(_) => Err(Error::ParseError("unable to parse response".to_string()))
+                }
+            }
+        }
+    }
 }
 
 #[derive(Serialize)]

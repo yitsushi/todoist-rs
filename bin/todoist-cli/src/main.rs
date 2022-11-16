@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::{thread, time};
 use todoist::enums::{Color, ViewStyle};
+use todoist::models;
 
 const TOKEN_ENV_NAME: &str = "TODOIST_TOKEN";
 
@@ -15,19 +16,17 @@ async fn main() {
 
     let client = todoist::Client::new(token);
 
-    let mut projects: HashMap<String, String> = HashMap::new();
+    let mut projects: HashMap<String, models::Project> = HashMap::new();
 
     for project in client.project().list().await {
-        projects.insert(project.id, project.name);
+        projects.insert(project.id.clone(), project.clone());
     }
 
     for task in client.task().list_active().await {
-        let project = match projects.get(&task.project_id.unwrap()) {
-            Some(project_name) => project_name,
-            None => "no project",
-        };
-
-        println!("<{}> {}", project, task.content);
+        match projects.get(&task.project_id.unwrap()) {
+            Some(project) => println!("<{} :: {}> {}", project.name, project.id, task.content),
+            None => {},
+        }
     }
 
     let resp = client.project().create(todoist::api::project::CreateRequest {

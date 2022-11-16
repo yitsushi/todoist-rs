@@ -1,6 +1,6 @@
 use serde::{Serialize, Deserialize};
 
-#[derive(Serialize, Deserialize,Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Project {
     pub id: String,
     pub name: String,
@@ -16,7 +16,7 @@ pub struct Project {
     pub url: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Task {
     pub creator_id: String,
     pub assignee: Option<String>,
@@ -37,7 +37,7 @@ pub struct Task {
     pub url: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Due {
     pub date: Option<String>,
     pub datetime: Option<String>,
@@ -46,3 +46,9 @@ pub struct Due {
     pub timezone: Option<String>,
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Collaborator {
+    pub id: String,
+    pub name: String,
+    pub email: String,
+}

@@ -1,4 +1,6 @@
 use std::collections::HashMap;
+use std::{thread, time};
+use todoist::enums::{Color, ViewStyle};
 
 const TOKEN_ENV_NAME: &str = "TODOIST_TOKEN";
 
@@ -26,5 +28,25 @@ async fn main() {
         };
 
         println!("<{}> {}", project, task.content);
+    }
+
+    let resp = client.project().create(todoist::api::project::CreateProjectRequest{
+        name: "test project".to_string(),
+        parent_id: None,
+        color: Some(Color::Lavender),
+        is_favorite: false,
+        view_style: ViewStyle::List
+    }).await;
+
+    let to_delete = match resp {
+        Ok(Some(proj)) => proj.id,
+        _ => return,
+    };
+
+    let ten_secs = time::Duration::from_secs(10);
+    thread::sleep(ten_secs);
+
+    if let Some(resp) = client.project().delete(to_delete.to_string()).await {
+        println!("{}", resp);
     }
 }

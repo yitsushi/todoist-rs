@@ -1,5 +1,6 @@
 use reqwest::StatusCode;
 
+#[derive(Debug)]
 pub enum Error {
     ParseError(String),
     RequestError(String),

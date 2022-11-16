@@ -1,6 +1,7 @@
 pub mod api;
 pub mod models;
 pub mod error;
+pub mod enums;
 
 use reqwest::RequestBuilder;
 use serde::Serialize;
@@ -69,6 +70,14 @@ impl Client {
         let request = client.post(self.v2(path))
             .header(reqwest::header::CONTENT_TYPE, "application/json")
             .body(serde_json::to_string(&data).unwrap());
+
+        self.send(request).await
+    }
+
+    pub async fn delete(&self, path: String) -> Result<Option<String>, Error> {
+        let client = reqwest::Client::new();
+        let request = client.delete(self.v2(path))
+            .header(reqwest::header::CONTENT_TYPE, "application/json");
 
         self.send(request).await
     }

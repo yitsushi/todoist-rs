@@ -30,7 +30,7 @@ async fn main() {
         println!("<{}> {}", project, task.content);
     }
 
-    let resp = client.project().create(todoist::api::project::CreateProjectRequest{
+    let resp = client.project().create(todoist::api::project::CreateRequest {
         name: "test project".to_string(),
         parent_id: None,
         color: Some(Color::Lavender),
@@ -43,7 +43,25 @@ async fn main() {
         _ => return,
     };
 
-    let ten_secs = time::Duration::from_secs(10);
+    let ten_secs = time::Duration::from_secs(5);
+
+    thread::sleep(ten_secs);
+
+    match client.project().update(to_delete.clone(), todoist::api::project::UpdateRequest{
+        name: Some("new name for test".to_string()),
+        color: Some(Color::Yellow),
+        is_favorite: None,
+        view_style: None
+    }).await {
+        Ok(_) => {},
+        Err(err) => println!("{}", err),
+    }
+
+    match client.project().get(to_delete.clone()).await {
+        Ok(Some(proj2)) => println!("{:?}", proj2),
+        _ => println!("nope, didn't work")
+    }
+
     thread::sleep(ten_secs);
 
     if let Some(resp) = client.project().delete(to_delete.to_string()).await {

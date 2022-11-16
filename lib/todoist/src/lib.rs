@@ -16,6 +16,7 @@ macro_rules! endpoint_fn {
     };
 }
 
+#[derive(Default)]
 pub struct Client {
     api_token: String,
 }

@@ -32,7 +32,7 @@ impl Client {
         format!("https://api.todoist.com/rest/v2{}", path)
     }
 
-    async fn send(&self, request: RequestBuilder) -> Result<String, Error> {
+    async fn send(&self, request: RequestBuilder) -> Result<Option<String>, Error> {
         let result = request
             .header(reqwest::header::AUTHORIZATION, format!("Bearer {}", self.token()))
             .send().await;
@@ -40,23 +40,31 @@ impl Client {
         match result {
             Ok(response) => match response.status() {
                 reqwest::StatusCode::OK => match response.text().await {
-                    Ok(text) => Ok(text),
+                    Ok(text) => Ok(Some(text)),
                     Err(err) => Err(Error::ParseError(err.to_string())),
                 },
-                c => Err(Error::RequestError(format!("invalid status code: {}", c)))
+                reqwest::StatusCode::NO_CONTENT => {Ok(None)},
+                c => {
+                    let msg = match c.as_u16() / 100 {
+                        4 => "request was invalid and should not be retried unmodified",
+                        5 => "server error, it's safe to retry later",
+                        _ => "invalid status code",
+                    };
+                    Err(Error::ServerError(c, msg.to_string()))
+                }
             },
             Err(err) => Err(Error::RequestError(err.to_string())),
         }
     }
 
-    pub async fn get(&self, path: String) -> Result<String, Error> {
+    pub async fn get(&self, path: String) -> Result<Option<String>, Error> {
         let client = reqwest::Client::new();
         let request = client.get(self.v2(path));
 
         self.send(request).await
     }
 
-    pub async fn post(&self, path: String, data: impl Serialize) -> Result<String, Error> {
+    pub async fn post(&self, path: String, data: impl Serialize) -> Result<Option<String>, Error> {
         let client = reqwest::Client::new();
         let request = client.post(self.v2(path))
             .header(reqwest::header::CONTENT_TYPE, "application/json")

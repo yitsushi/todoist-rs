@@ -1,7 +1,7 @@
 use serde::Serialize;
 use crate::error::Error;
 
-use crate::models;
+use crate::{models, EmptyQuery};
 
 crate::endpoint_group!();
 
@@ -19,6 +19,19 @@ impl Client<'_> {
         }
     }
 
+    pub async fn get(&self, id: String) -> Result<Option<models::Task>, Error> {
+        match self.api_client.get(format!("/tasks/{}", id), &EmptyQuery{}).await {
+            Err(err) => Err(Error::RequestError(err.to_string())),
+            Ok(None) => { println!("no content"); Ok(None) },
+            Ok(Some(text)) => {
+                match serde_json::from_str(&text) {
+                    Ok(task) => Ok(Some(task)),
+                    Err(_) => Err(Error::ParseError("unable to parse response".to_string()))
+                }
+            }
+        }
+    }
+
     pub async fn create(&self, request: CreateRequest) -> Result<Option<models::Task>, Error> {
         match self.api_client.post("/tasks".to_string(), request).await {
             Err(err) => Err(Error::RequestError(err.to_string())),
@@ -29,6 +42,27 @@ impl Client<'_> {
                     Err(_) => Err(Error::ParseError("unable to parse response".to_string()))
                 }
             }
+        }
+    }
+
+    pub async fn close(&self, id: String) -> Option<Error> {
+        match self.api_client.post(format!("/tasks/{}/close", id), EmptyQuery{}).await {
+            Err(err) => Some(Error::RequestError(err.to_string())),
+            Ok(_) => None,
+        }
+    }
+
+    pub async fn reopen(&self, id: String) -> Option<Error> {
+        match self.api_client.post(format!("/tasks/{}/reopen", id), EmptyQuery{}).await {
+            Err(err) => Some(Error::RequestError(err.to_string())),
+            Ok(_) => None,
+        }
+    }
+
+    pub async fn delete(&self, id: String) -> Option<Error> {
+        match self.api_client.delete(format!("/tasks/{}", id)).await {
+            Err(err) => Some(Error::RequestError(err.to_string())),
+            Ok(_) => None,
         }
     }
 }

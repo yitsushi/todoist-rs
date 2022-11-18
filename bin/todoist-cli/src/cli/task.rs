@@ -13,11 +13,11 @@ pub struct Cli {
 pub enum Action {
     List(ListOptions),
     New(NewOptions),
-    Show,
+    Show(ShowOptions),
     Update,
-    Close,
-    Reopen,
-    Delete,
+    Close(CloseOptions),
+    Reopen(ReopenOptions),
+    Delete(DeleteOptions),
 }
 
 #[derive(Args,Debug,Clone)]
@@ -66,6 +66,30 @@ pub struct NewOptions {
     assignee_id: Option<String>,
 }
 
+#[derive(Args,Debug,Clone)]
+pub struct ShowOptions {
+    #[clap(long)]
+    id: String,
+}
+
+#[derive(Args,Debug,Clone)]
+pub struct CloseOptions {
+    #[clap(long)]
+    id: String,
+}
+
+#[derive(Args,Debug,Clone)]
+pub struct ReopenOptions {
+    #[clap(long)]
+    id: String,
+}
+
+#[derive(Args,Debug,Clone)]
+pub struct DeleteOptions {
+    #[clap(long)]
+    id: String,
+}
+
 impl Cli {
     pub async fn run(&self, client: &todoist::Client) {
         match self.action.clone() {
@@ -81,11 +105,23 @@ impl Cli {
                     Err(err) => { println!("error: {}", err); },
                 }
             }
-            Action::Show => todo!(),
+            Action::Show(opts) => {
+                match client.task().get(opts.id).await {
+                    Ok(Some(task)) => { println!("{:#?}", task); },
+                    Ok(None) => println!("task not found"),
+                    Err(err) => println!("{}", err),
+                }
+            },
             Action::Update => todo!(),
-            Action::Close => todo!(),
-            Action::Reopen => todo!(),
-            Action::Delete => todo!(),
+            Action::Close(opts) => {
+                client.task().close(opts.id).await;
+            },
+            Action::Reopen(opts) => {
+                client.task().reopen(opts.id).await;
+            },
+            Action::Delete(opts) => {
+                client.task().delete(opts.id).await;
+            },
         }
     }
 }

@@ -1,6 +1,6 @@
 use core::option::Option;
 use clap::{Args, Subcommand};
-use todoist::api::project::CreateRequest;
+use todoist::api::project::{CreateRequest, UpdateRequest};
 use todoist::enums::ViewStyle;
 
 use super::project_options::*;
@@ -37,12 +37,17 @@ impl Cli {
                     name: opts.name,
                     parent_id: opts.parent_id,
                     color: opts.color,
-                    is_favorite: false,
+                    is_favorite: opts.is_favorite,
                     view_style: opts.view_style.unwrap_or(ViewStyle::List),
                 }).await;
             }
             Action::Update(opts) => {
-                println!("{}", opts.name.unwrap())
+                let _ = client.project().update(opts.id, UpdateRequest {
+                    name: opts.name,
+                    color: opts.color,
+                    is_favorite: opts.is_favorite,
+                    view_style: opts.view_style,
+                }).await;
             }
             Action::Show(opts) => {
                 match client.project().get(opts.id).await {

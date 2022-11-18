@@ -9,8 +9,8 @@ pub struct NewOptions {
     pub parent_id: Option<String>,
     #[clap(long)]
     pub color: Option<Color>,
-    // #[clap(long, default_value=false)]
-    // is_favorite: bool,
+    #[clap(long, default_value_t=false)]
+    pub is_favorite: bool,
     #[clap(long)]
     pub view_style: Option<ViewStyle>,
 }
@@ -23,8 +23,8 @@ pub struct UpdateOptions {
     pub name: Option<String>,
     #[clap(long)]
     pub color: Option<Color>,
-    // #[clap(long, default_value=false)]
-    // is_favorite: bool,
+    #[clap(long)]
+    pub is_favorite: Option<bool>,
     #[clap(long)]
     pub view_style: Option<ViewStyle>,
 }

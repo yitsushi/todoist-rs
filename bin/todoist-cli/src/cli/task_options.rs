@@ -1,5 +1,6 @@
 use clap::Args;
-use todoist::{api::task::{CreateRequest, ListRequest}, enums::Priority};
+use todoist::api::task::{CreateRequest, ListRequest, UpdateRequest};
+use todoist::enums::Priority;
 
 #[derive(Args,Debug,Clone)]
 pub struct ListOptions {
@@ -31,6 +32,30 @@ pub struct NewOptions {
     pub parent_id: Option<String>,
     #[clap(long)]
     pub order: Option<i64>,
+    #[clap(long)]
+    pub labels: Vec<String>,
+    #[clap(long)]
+    pub priority: Option<Priority>,
+    #[clap(long)]
+    pub due_string: Option<String>,
+    #[clap(long)]
+    pub due_date: Option<String>,
+    #[clap(long)]
+    pub due_datetime: Option<String>,
+    #[clap(long)]
+    pub due_lang: Option<String>,
+    #[clap(long)]
+    pub assignee_id: Option<String>,
+}
+
+#[derive(Args,Debug,Clone)]
+pub struct UpdateOptions {
+    #[clap(long)]
+    pub id: String,
+    #[clap(long)]
+    pub content: Option<String>,
+    #[clap(long)]
+    pub description: Option<String>,
     #[clap(long)]
     pub labels: Vec<String>,
     #[clap(long)]
@@ -93,6 +118,22 @@ impl From<NewOptions> for CreateRequest {
             section_id: opts.section_id,
             parent_id: opts.parent_id,
             order: opts.order,
+            labels: opts.labels,
+            priority: opts.priority,
+            due_string: opts.due_string,
+            due_date: opts.due_date,
+            due_datetime: opts.due_datetime,
+            due_lang: opts.due_lang,
+            assignee_id: opts.assignee_id,
+        }
+    }
+}
+
+impl From<UpdateOptions> for UpdateRequest {
+    fn from(opts: UpdateOptions) -> Self {
+        UpdateRequest{
+            content: opts.content,
+            description: opts.description,
             labels: opts.labels,
             priority: opts.priority,
             due_string: opts.due_string,

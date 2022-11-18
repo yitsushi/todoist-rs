@@ -15,7 +15,7 @@ pub enum Action {
     List(ListOptions),
     New(NewOptions),
     Show(ShowOptions),
-    Update,
+    Update(UpdateOptions),
     Close(CloseOptions),
     Reopen(ReopenOptions),
     Delete(DeleteOptions),
@@ -43,7 +43,13 @@ impl Cli {
                     Err(err) => println!("{}", err),
                 }
             },
-            Action::Update => todo!(),
+            Action::Update(opts) => {
+                match client.task().update(opts.id.clone(), opts.into()).await {
+                    Ok(Some(task)) => { println!("{:#?}", task); },
+                    Ok(None) => { println!("something went wrong"); },
+                    Err(err) => { println!("error: {}", err); },
+                }
+            },
             Action::Close(opts) => {
                 client.task().close(opts.id).await;
             },

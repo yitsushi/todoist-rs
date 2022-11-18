@@ -26,7 +26,7 @@ impl Cli {
         match self.action.clone() {
             Action::List(opts) => {
                 for task in client.task().list(opts.into()).await {
-                    println!("[{}] {}", task.project_id.unwrap(), task.content);
+                    println!("[project:{}] <{}> {}", task.project_id.unwrap(), task.id, task.content);
                 }
             }
             Action::New(opts) => {

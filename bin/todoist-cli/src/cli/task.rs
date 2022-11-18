@@ -13,6 +13,11 @@ pub struct Cli {
 pub enum Action {
     List(ListOptions),
     New(NewOptions),
+    Show,
+    Update,
+    Close,
+    Reopen,
+    Delete,
 }
 
 #[derive(Args,Debug,Clone)]
@@ -76,6 +81,11 @@ impl Cli {
                     Err(err) => { println!("error: {}", err); },
                 }
             }
+            Action::Show => todo!(),
+            Action::Update => todo!(),
+            Action::Close => todo!(),
+            Action::Reopen => todo!(),
+            Action::Delete => todo!(),
         }
     }
 }

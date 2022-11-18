@@ -1,4 +1,5 @@
 mod project;
+mod task;
 
 use core::option::Option;
 use clap::{Parser, Subcommand};
@@ -32,7 +33,7 @@ impl Cli {
     pub async fn run(&self) {
         match &self.action {
             GroupAction::Project(project) => project.run(&self.client).await,
-            GroupAction::Task => {}
+            GroupAction::Task(task) => task.run(&self.client).await,
             GroupAction::Section => {}
             GroupAction::Comment => {}
             GroupAction::Label => {}
@@ -43,7 +44,7 @@ impl Cli {
 #[derive(Subcommand,Debug)]
 pub enum GroupAction {
     Project(project::Cli),
-    Task,
+    Task(task::Cli),
     Section,
     Comment,
     Label,

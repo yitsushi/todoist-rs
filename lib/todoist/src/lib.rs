@@ -3,6 +3,7 @@ pub mod models;
 pub mod error;
 pub mod enums;
 
+use core::option::Option;
 use reqwest::RequestBuilder;
 use serde::Serialize;
 use error::Error;
@@ -15,6 +16,9 @@ macro_rules! endpoint_fn {
         }
     };
 }
+
+#[derive(Serialize)]
+pub struct EmptyQuery {}
 
 #[derive(Default)]
 pub struct Client {
@@ -59,14 +63,14 @@ impl Client {
         }
     }
 
-    pub async fn get(&self, path: String) -> Result<Option<String>, Error> {
+    pub async fn get<T: Serialize>(&self, path: String, query: &T) -> Result<Option<String>, Error> {
         let client = reqwest::Client::new();
-        let request = client.get(self.v2(path));
+        let request = client.get(self.v2(path)).query(query);
 
         self.send(request).await
     }
 
-    pub async fn post(&self, path: String, data: impl Serialize) -> Result<Option<String>, Error> {
+    pub async fn post<T: Serialize>(&self, path: String, data: T) -> Result<Option<String>, Error> {
         let client = reqwest::Client::new();
         let request = client.post(self.v2(path))
             .header(reqwest::header::CONTENT_TYPE, "application/json")

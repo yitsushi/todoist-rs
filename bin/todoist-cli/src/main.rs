@@ -36,12 +36,12 @@ async fn checks(token: String) {
         projects.insert(project.id.clone(), project.clone());
     }
 
-    for task in client.task().list_active().await {
-        match projects.get(&task.project_id.unwrap()) {
-            Some(project) => println!("<{} :: {}> {}", project.name, project.id, task.content),
-            None => {},
-        }
-    }
+    // for task in client.task().list().await {
+    //     match projects.get(&task.project_id.unwrap()) {
+    //         Some(project) => println!("<{} :: {}> {}", project.name, project.id, task.content),
+    //         None => {},
+    //     }
+    // }
 
     let resp = client.project().create(todoist::api::project::CreateRequest {
         name: "test project".to_string(),

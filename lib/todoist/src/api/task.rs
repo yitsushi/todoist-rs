@@ -1,9 +1,13 @@
+use serde::Serialize;
+use crate::error::Error;
+
 use crate::models;
+
 crate::endpoint_group!();
 
 impl Client<'_> {
-    pub async fn list_active(&self) -> Vec<models::Task> {
-        match self.api_client.get("/tasks".to_string()).await {
+    pub async fn list(&self, params: ListRequest) -> Vec<models::Task> {
+        match self.api_client.get("/tasks".to_string(), &params).await {
             Err(err) => { println!("{}", err); vec![] },
             Ok(None) => { println!("no content"); vec![] },
             Ok(Some(text)) => {
@@ -15,5 +19,43 @@ impl Client<'_> {
         }
     }
 
+    pub async fn create(&self, request: CreateRequest) -> Result<Option<models::Task>, Error> {
+        match self.api_client.post("/tasks".to_string(), request).await {
+            Err(err) => Err(Error::RequestError(err.to_string())),
+            Ok(None) => { println!("no content"); Ok(None) },
+            Ok(Some(text)) => {
+                match serde_json::from_str(&text) {
+                    Ok(task) => Ok(Some(task)),
+                    Err(_) => Err(Error::ParseError("unable to parse response".to_string()))
+                }
+            }
+        }
+    }
 }
 
+#[derive(Serialize)]
+pub struct ListRequest {
+    pub project_id: Option<String>,
+    pub section_id: Option<String>,
+    pub label: Option<String>,
+    pub filter: Option<String>,
+    pub lang: Option<String>,
+    pub ids: Option<String>,
+}
+
+#[derive(Serialize)]
+pub struct CreateRequest {
+    pub content: String,
+    pub description: Option<String>,
+    pub project_id: Option<String>,
+    pub section_id: Option<String>,
+    pub parent_id: Option<String>,
+    pub order: Option<i64>,
+    pub labels: Vec<String>,
+    pub priority: Option<u8>,
+    pub due_string: Option<String>,
+    pub due_date: Option<String>,
+    pub due_datetime: Option<String>,
+    pub due_lang: Option<String>,
+    pub assignee_id: Option<String>,
+}

@@ -2,13 +2,13 @@ use serde::Serialize;
 
 use crate::enums::{Color, ViewStyle};
 use crate::error::Error;
-use crate::models;
+use crate::{EmptyQuery, models};
 
 crate::endpoint_group!();
 
 impl Client<'_> {
     pub async fn list(&self) -> Vec<models::Project> {
-        match self.api_client.get("/projects".to_string()).await {
+        match self.api_client.get("/projects".to_string(), &EmptyQuery{}).await {
             Err(err) => { println!("{}", err); vec![] },
             Ok(None) => { println!("no content"); vec![] }
             Ok(Some(text)) => {
@@ -41,7 +41,7 @@ impl Client<'_> {
     }
 
     pub async fn get(&self, id: String) -> Result<Option<models::Project>, Error> {
-        match self.api_client.get(format!("/projects/{}", id)).await {
+        match self.api_client.get(format!("/projects/{}", id), &EmptyQuery{}).await {
             Err(err) => Err(Error::RequestError(err.to_string())),
             Ok(None) => { println!("no content"); Ok(None) },
             Ok(Some(text)) => {
@@ -67,7 +67,7 @@ impl Client<'_> {
     }
 
     pub async fn collaborators(&self, id: String) -> Result<Vec<models::Collaborator>, Error> {
-        match self.api_client.get(format!("/projects/{}/collaborators", id)).await {
+        match self.api_client.get(format!("/projects/{}/collaborators", id), &EmptyQuery{}).await {
             Err(err) => Err(Error::RequestError(err.to_string())),
             Ok(None) => Ok(vec![]),
             Ok(Some(text)) => {

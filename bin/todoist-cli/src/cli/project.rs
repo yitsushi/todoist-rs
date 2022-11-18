@@ -1,7 +1,9 @@
 use core::option::Option;
 use clap::{Args, Subcommand};
 use todoist::api::project::CreateRequest;
-use todoist::enums::{Color, ViewStyle};
+use todoist::enums::ViewStyle;
+
+use super::project_options::*;
 
 #[derive(Args,Debug)]
 pub struct Cli {
@@ -16,46 +18,6 @@ pub enum Action {
     New(NewOptions),
     Update(UpdateOptions),
     Show(ShowOptions),
-}
-
-#[derive(Args,Debug,Clone)]
-pub struct NewOptions {
-    #[clap(long)]
-    name: String,
-    #[clap(long)]
-    parent_id: Option<String>,
-    #[clap(long)]
-    color: Option<Color>,
-    // #[clap(long, default_value=false)]
-    // is_favorite: bool,
-    #[clap(long)]
-    view_style: Option<ViewStyle>,
-}
-
-#[derive(Args,Debug,Clone)]
-pub struct UpdateOptions {
-    #[clap(long)]
-    id: String,
-    #[clap(long)]
-    name: Option<String>,
-    #[clap(long)]
-    color: Option<Color>,
-    // #[clap(long, default_value=false)]
-    // is_favorite: bool,
-    #[clap(long)]
-    view_style: Option<ViewStyle>,
-}
-
-#[derive(Args,Debug,Clone)]
-pub struct DeleteOptions {
-    #[clap(long)]
-    id: String,
-}
-
-#[derive(Args,Debug,Clone)]
-pub struct ShowOptions {
-    #[clap(long)]
-    id: String,
 }
 
 impl Cli {

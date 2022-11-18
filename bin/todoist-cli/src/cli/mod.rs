@@ -1,5 +1,7 @@
 mod project;
+mod project_options;
 mod task;
+mod task_options;
 
 use core::option::Option;
 use clap::{Parser, Subcommand};

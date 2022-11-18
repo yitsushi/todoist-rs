@@ -1,7 +1,7 @@
 use serde::Serialize;
+
 use crate::enums::Priority;
 use crate::error::Error;
-
 use crate::{models, EmptyQuery};
 
 crate::endpoint_group!();

@@ -1,5 +1,6 @@
 pub mod project;
 pub mod task;
+pub mod comment;
 
 #[macro_export]
 macro_rules! endpoint_group {

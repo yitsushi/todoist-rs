@@ -61,3 +61,42 @@ impl Display for Collaborator {
         write!(f, "{} <{}>", self.name, self.email)
     }
 }
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Comment {
+    pub id: String,
+    pub content: String,
+    pub posted_at: String,
+    pub project_id: Option<String>,
+    pub task_id: Option<String>,
+    pub attachment: Option<Attachment>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Attachment {
+    pub file_name: String,
+    pub file_type: String,
+    pub file_url: String,
+    pub resource_type: String,
+}
+
+impl Display for Comment {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let content = &self.content;
+        let posted_at = &self.posted_at;
+        let id = &self.id;
+        let parent = if let Some(task_id) = &self.task_id {
+            Some(task_id)
+        } else if let Some(project_id) = &self.project_id {
+            Some(project_id)
+        } else {
+            None
+        };
+
+        if let Some(parent_id) = parent {
+            write!(f, "ID: {}\nParent: {}\n{}\n<{}>", id, parent_id, content, posted_at)
+        } else {
+            write!(f, "ID: {}\n{}\n<{}>", id, content, posted_at)
+        }
+    }
+}

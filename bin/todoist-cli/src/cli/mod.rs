@@ -1,3 +1,5 @@
+mod comment;
+mod comment_options;
 mod project;
 mod project_options;
 mod task;
@@ -37,7 +39,7 @@ impl Cli {
             GroupAction::Project(project) => project.run(&self.client).await,
             GroupAction::Task(task) => task.run(&self.client).await,
             GroupAction::Section => {}
-            GroupAction::Comment => {}
+            GroupAction::Comment(comment) => comment.run(&self.client).await,
             GroupAction::Label => {}
         }
     }
@@ -48,6 +50,6 @@ pub enum GroupAction {
     Project(project::Cli),
     Task(task::Cli),
     Section,
-    Comment,
+    Comment(comment::Cli),
     Label,
 }

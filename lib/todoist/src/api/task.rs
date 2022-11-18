@@ -1,4 +1,5 @@
 use serde::Serialize;
+use crate::enums::Priority;
 use crate::error::Error;
 
 use crate::{models, EmptyQuery};
@@ -86,7 +87,7 @@ pub struct CreateRequest {
     pub parent_id: Option<String>,
     pub order: Option<i64>,
     pub labels: Vec<String>,
-    pub priority: Option<u8>,
+    pub priority: Option<Priority>,
     pub due_string: Option<String>,
     pub due_date: Option<String>,
     pub due_datetime: Option<String>,

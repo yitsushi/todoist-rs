@@ -1,6 +1,7 @@
 use std::fmt::Display;
 
 use serde::{Serialize, Deserialize};
+use super::enums::*;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Project {
@@ -9,12 +10,12 @@ pub struct Project {
     pub comment_count: i64,
     pub parent_id: Option<String>,
     pub order: i64,
-    pub color: String,
+    pub color: Color,
     pub is_shared: bool,
     pub is_favorite: bool,
     pub is_inbox_project: bool,
     pub is_team_inbox: bool,
-    pub view_style: String,
+    pub view_style: ViewStyle,
     pub url: String,
 }
 
@@ -32,7 +33,7 @@ pub struct Task {
     pub id: String,
     pub labels: Vec<String>,
     pub order: i64,
-    pub priority: u8,
+    pub priority: Priority,
     pub project_id: Option<String>,
     pub section_id: Option<String>,
     pub parent_id: Option<String>,

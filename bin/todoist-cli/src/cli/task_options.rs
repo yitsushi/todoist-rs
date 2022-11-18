@@ -1,5 +1,5 @@
 use clap::Args;
-use todoist::api::task::{CreateRequest, ListRequest};
+use todoist::{api::task::{CreateRequest, ListRequest}, enums::Priority};
 
 #[derive(Args,Debug,Clone)]
 pub struct ListOptions {
@@ -34,7 +34,7 @@ pub struct NewOptions {
     #[clap(long)]
     pub labels: Vec<String>,
     #[clap(long)]
-    pub priority: Option<u8>,
+    pub priority: Option<Priority>,
     #[clap(long)]
     pub due_string: Option<String>,
     #[clap(long)]

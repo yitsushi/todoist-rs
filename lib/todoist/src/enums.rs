@@ -1,15 +1,6 @@
 use core::result::Result;
-use serde::{Serialize, Serializer};
-
-macro_rules! impl_serialize_with_to_string {
-    ($name:ident) => {
-        impl Serialize for $name {
-            fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: Serializer {
-                serializer.serialize_str(&self.to_string())
-            }
-        }
-    };
-}
+use serde::{Serialize, Deserialize};
+use serde_repr::{Serialize_repr, Deserialize_repr};
 
 macro_rules! imp_from_str {
     ($name:ident) => {
@@ -20,14 +11,15 @@ macro_rules! imp_from_str {
                 if let Some(value) = Self::from_str(s) {
                     Ok(value)
                 } else {
-                    Err("invalid value".to_string())
+                    Err(format!("valid options: {}", Self::variants().join(", ")))
                 }
             }
         }
     };
 }
 
-#[derive(Debug,Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[serde(rename_all = "snake_case")]
 pub enum ViewStyle { List, Board }
 
 impl ViewStyle {
@@ -36,6 +28,10 @@ impl ViewStyle {
             ViewStyle::List => "list",
             ViewStyle::Board => "board",
         })
+    }
+
+    pub fn variants() -> Vec<&'static str> {
+        return vec!["list", "board"]
     }
 
     fn from_str(s: &str) -> Option<Self> {
@@ -47,7 +43,8 @@ impl ViewStyle {
     }
 }
 
-#[derive(Debug,Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[serde(rename_all = "snake_case")]
 pub enum Color {
     BerryRed, Blue,
     Charcoal,
@@ -88,6 +85,31 @@ impl Color {
         })
     }
 
+    pub fn variants() -> Vec<&'static str> {
+        return vec![
+            "berry_red",
+            "blue",
+            "charcoal",
+            "grape",
+            "green",
+            "grey",
+            "lavender",
+            "light_blue",
+            "lime_green",
+            "magenta",
+            "mint_green",
+            "olive_green",
+            "orange",
+            "red",
+            "salmon",
+            "sky_blue",
+            "taupe",
+            "teal",
+            "violet",
+            "yellow",
+        ]
+    }
+
     fn from_str(s: &str) -> Option<Self> {
         match s {
             "berry_red" => Some(Color::BerryRed),
@@ -115,8 +137,31 @@ impl Color {
     }
 }
 
-impl_serialize_with_to_string!(ViewStyle);
-impl_serialize_with_to_string!(Color);
+#[derive(Serialize_repr, Deserialize_repr, PartialEq, Debug, Clone)]
+#[repr(u8)]
+pub enum Priority {
+    Low = 1,
+    Normal = 2,
+    High = 3,
+    Urgent = 4,
+}
+
+impl Priority {
+    fn from_str(s: &str) -> Option<Self> {
+        match s {
+            "low" => Some(Priority::Low),
+            "normal" => Some(Priority::Normal),
+            "high" => Some(Priority::High),
+            "urgent" => Some(Priority::Urgent),
+            _      => None,
+        }
+    }
+
+    pub fn variants() -> Vec<&'static str> {
+        return vec!["low", "normal", "high", "urgent"]
+    }
+}
 
 imp_from_str!(ViewStyle);
 imp_from_str!(Color);
+imp_from_str!(Priority);

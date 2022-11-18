@@ -40,3 +40,9 @@ pub struct ShowOptions {
     #[clap(long)]
     pub id: String,
 }
+
+#[derive(Args,Debug,Clone)]
+pub struct CollaboratorsOptions {
+    #[clap(long)]
+    pub id: String,
+}

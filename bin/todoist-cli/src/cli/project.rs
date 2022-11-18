@@ -18,6 +18,7 @@ pub enum Action {
     New(NewOptions),
     Update(UpdateOptions),
     Show(ShowOptions),
+    Collaborators(CollaboratorsOptions),
 }
 
 impl Cli {
@@ -48,6 +49,17 @@ impl Cli {
                     Ok(Some(proj)) => { println!("{:#?}", proj); },
                     Ok(None) => println!("project not found"),
                     Err(err) => println!("{}", err),
+                }
+            }
+            Action::Collaborators(opts) => {
+                match client.project().collaborators(opts.id).await {
+                    Err(err) => println!("{}", err),
+                    Ok(collaborators) => {
+                        println!("Collaborators:");
+                        for collaborator in collaborators {
+                            println!(" - {}", collaborator)
+                        }
+                    },
                 }
             }
         }

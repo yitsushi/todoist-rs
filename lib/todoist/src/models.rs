@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -51,4 +53,10 @@ pub struct Collaborator {
     pub id: String,
     pub name: String,
     pub email: String,
+}
+
+impl Display for Collaborator {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{} <{}>", self.name, self.email)
+    }
 }

@@ -1,6 +1,5 @@
 use serde::Serialize;
 
-use crate::enums::{Color, ViewStyle};
 use crate::error::Error;
 use crate::{EmptyQuery, models};
 

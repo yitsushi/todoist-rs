@@ -3,6 +3,10 @@ use std::fmt::Display;
 use serde::{Serialize, Deserialize};
 use super::enums::*;
 
+const ICON_FAVORITE: &'static str = "★";
+const ICON_SHARED: &'static str = "⛹";
+const ICON_INBOX: &'static str = "✉ ";
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Project {
     pub id: String,
@@ -17,6 +21,16 @@ pub struct Project {
     pub is_team_inbox: bool,
     pub view_style: ViewStyle,
     pub url: String,
+}
+
+impl Display for Project {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let fav_icon = if self.is_favorite { ICON_FAVORITE } else { &"" };
+        let shared_icon = if self.is_shared { ICON_SHARED } else { &"" };
+        let inbox_icon = if self.is_inbox_project { ICON_INBOX } else { &"" };
+
+        write!(f, "{} [{}] {}{}{}", self.name, self.id, shared_icon, inbox_icon, fav_icon)
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

@@ -26,7 +26,11 @@ impl Cli {
         match self.action.clone() {
             Action::List => {
                 for project in client.project().list().await {
-                    println!("[{}] {}", project.id, project.name);
+                    if let Some(_) = project.parent_id {
+                        println!("  - {}", project);
+                    } else {
+                        println!("{}", project);
+                    }
                 }
             }
             Action::Delete(opts) => {

@@ -14,7 +14,9 @@ ready to be marked with a precious `v1.0.0` tag.
 
 ## Configuration
 
-Configuration file: `~/.config/todoist/config.ron`
+Configuration file:
+ - Linux/Mac: `~/.config/todoist-cli/config.ron`
+ - Windows: `%APPDATA%\todoist-cli\config\config.ron`
 
 ```ron
 (

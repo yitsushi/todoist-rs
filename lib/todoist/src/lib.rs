@@ -7,7 +7,7 @@ use core::option::Option;
 use reqwest::RequestBuilder;
 use serde::Serialize;
 use error::Error;
-use api::{project, task, comment};
+use api::{project, comment, section, task};
 
 macro_rules! endpoint_fn {
     ($name:ident) => {
@@ -88,6 +88,7 @@ impl Client {
     }
 
     endpoint_fn!(project);
-    endpoint_fn!(task);
     endpoint_fn!(comment);
+    endpoint_fn!(section);
+    endpoint_fn!(task);
 }

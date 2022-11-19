@@ -100,3 +100,17 @@ impl Display for Comment {
         }
     }
 }
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Section {
+    pub id: String,
+    pub project_id: String,
+    pub name: String,
+    pub order: i64,
+}
+
+impl Display for Section {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "[{}] <project:{}> {}", self.id, self.project_id, self.name)
+    }
+}

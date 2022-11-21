@@ -1,6 +1,6 @@
 [package]
 name = "todoistctl"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 authors = ["Balazs Nadasdi <efertone@pm.me>"]
 license = "Apache-2.0 AND MIT"
@@ -17,5 +17,5 @@ categories = ["data-structures", "web-programming::http-client"]
 clap = { version = "4.0.25", features = ["derive"] }
 confy = { version = "0.5.1", features = ["ron", "ron_conf"], default-features = false }
 serde = { version = "1.0.147", features = ["derive"] }
-libtodoist = { path = "../../lib/libtodoist/", version = "0.2.0" }
+libtodoist = { path = "../../lib/libtodoist/", version = "0.3.0" }
 tokio = { version = "1.21.2", features = ["full"] }

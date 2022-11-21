@@ -1,10 +1,16 @@
 # Todoist crate and cli
 
-## Configuration
+## CLI
+
+```bash
+cargo install todoistctl
+```
+
+### Configuration
 
 Configuration file:
- - Linux/Mac: `~/.config/todoist-cli/config.ron`
- - Windows: `%APPDATA%\todoist-cli\config\config.ron`
+ - Linux/Mac: `~/.config/todoistctl/config.ron`
+ - Windows: `%APPDATA%\todoistctl\config\config.ron`
 
 ```ron
 (
@@ -12,23 +18,30 @@ Configuration file:
 )
 ```
 
-## Example commands
+### Example commands
 
 ```bash
 # Add new task to inbox (default project)
-todoist-cli task new --content="fancy task" --priority=high
+todoistctl task new --content="fancy task" --priority=high
 
 # List projects
-todoist-cli project list
+todoistctl project list
 
 # List Today's tasks
-todoist-cli task list --filter="today"
+todoistctl task list --filter="today"
 ```
 
-## Library usage
+## Library
 
-Check `bin/todoist-cli`, I think that's the best way to see how to use it. In
-case it's not good enough, here is an example:
+```bash
+cargo add libtodoist
+```
+
+### Library usage
+
+Check [bin/todoistctl](https://github.com/yitsushi/todoist-rs/tree/main/bin/todoistctl),
+I think that's the best way to see how to use it. In case it's not good enough,
+here is an example:
 
 ```rust
 use libtodoist::Client;

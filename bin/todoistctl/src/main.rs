@@ -13,7 +13,7 @@ impl ::std::default::Default for Config {
 
 #[tokio::main]
 async fn main() {
-    let cfg: Config = match confy::load("todoist-cli", "config") {
+    let cfg: Config = match confy::load("todoistctl", "config") {
         Ok(c) => c,
         Err(err) => { println!("{}", err) ; return },
     };

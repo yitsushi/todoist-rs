@@ -1,9 +1,14 @@
 # Todolist API crate
 
-## Library usage
+```bash
+cargo add libtodoist
+```
 
-Check `bin/todoist-cli`, I think that's the best way to see how to use it. In
-case it's not good enough, here is an example:
+### Library usage
+
+Check [bin/todoistctl](https://github.com/yitsushi/todoist-rs/tree/main/bin/todoistctl),
+I think that's the best way to see how to use it. In case it's not good enough,
+here is an example:
 
 ```rust
 use libtodoist::Client;

@@ -1,10 +1,14 @@
 # Todoist CLI
 
-## Configuration
+```bash
+cargo install todoistctl
+```
+
+### Configuration
 
 Configuration file:
- - Linux/Mac: `~/.config/todoist-cli/config.ron`
- - Windows: `%APPDATA%\todoist-cli\config\config.ron`
+ - Linux/Mac: `~/.config/todoistctl/config.ron`
+ - Windows: `%APPDATA%\todoistctl\config\config.ron`
 
 ```ron
 (
@@ -12,16 +16,15 @@ Configuration file:
 )
 ```
 
-## Example commands
+### Example commands
 
 ```bash
 # Add new task to inbox (default project)
-todoist-cli task new --content="fancy task" --priority=high
+todoistctl task new --content="fancy task" --priority=high
 
 # List projects
-todoist-cli project list
+todoistctl project list
 
 # List Today's tasks
-todoist-cli task list --filter="today"
+todoistctl task list --filter="today"
 ```
-

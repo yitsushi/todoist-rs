@@ -412,6 +412,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fc7fcc620a3bff7cdd7a365be3376c97191aeaccc2a603e600951e452615bf89"
 
 [[package]]
+name = "libtodoist"
+version = "0.2.0"
+dependencies = [
+ "reqwest",
+ "serde",
+ "serde_json",
+ "serde_repr",
+]
+
+[[package]]
 name = "lock_api"
 version = "0.4.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -914,23 +924,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cda74da7e1a664f795bb1f8a87ec406fb89a02522cf6e50620d016add6dbbf5c"
 
 [[package]]
-name = "todoist"
-version = "0.1.0"
-dependencies = [
- "reqwest",
- "serde",
- "serde_json",
- "serde_repr",
-]
-
-[[package]]
-name = "todoist-cli"
-version = "0.1.0"
+name = "todoistctl"
+version = "0.2.0"
 dependencies = [
  "clap",
  "confy",
+ "libtodoist",
  "serde",
- "todoist",
  "tokio",
 ]
 

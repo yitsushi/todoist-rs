@@ -1,0 +1,20 @@
+[package]
+name = "libtodoist"
+version = "0.2.0"
+edition = "2021"
+authors = ["Balazs Nadasdi <efertone@pm.me>"]
+license = "Apache-2.0 AND MIT"
+homepage = "https://github.com/yitsushi/todoist-rs"
+repository = "https://github.com/yitsushi/todoist-rs"
+description = "Rust wrapper around Todoist API"
+readme = "README.md"
+keywords = ["todoist", "todo", "task", "project", "todoist"]
+categories = ["data-structures", "web-programming::http-client"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+reqwest = { version = "0.11.12", features = ["json"] }
+serde = { version = "1.0.147", features = ["derive"] }
+serde_json = "1.0.87"
+serde_repr = "0.1.9"

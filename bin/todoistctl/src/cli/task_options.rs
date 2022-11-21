@@ -1,6 +1,6 @@
 use clap::Args;
-use todoist::api::task::{CreateRequest, ListRequest, UpdateRequest};
-use todoist::enums::Priority;
+use libtodoist::api::task::{CreateRequest, ListRequest, UpdateRequest};
+use libtodoist::enums::Priority;
 
 #[derive(Args,Debug,Clone)]
 pub struct ListOptions {

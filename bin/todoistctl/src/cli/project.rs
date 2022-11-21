@@ -1,7 +1,7 @@
 use core::option::Option;
 use clap::{Args, Subcommand};
-use todoist::api::project::{CreateRequest, UpdateRequest};
-use todoist::enums::ViewStyle;
+use libtodoist::api::project::{CreateRequest, UpdateRequest};
+use libtodoist::enums::ViewStyle;
 
 use super::project_options::*;
 
@@ -22,7 +22,7 @@ pub enum Action {
 }
 
 impl Cli {
-    pub async fn run(&self, client: &todoist::Client) {
+    pub async fn run(&self, client: &libtodoist::Client) {
         match self.action.clone() {
             Action::List => {
                 for project in client.project().list().await {

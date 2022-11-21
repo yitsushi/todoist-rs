@@ -1,5 +1,5 @@
 use clap::Args;
-use todoist::enums::{Color, ViewStyle};
+use libtodoist::enums::{Color, ViewStyle};
 
 #[derive(Args,Debug,Clone)]
 pub struct NewOptions {

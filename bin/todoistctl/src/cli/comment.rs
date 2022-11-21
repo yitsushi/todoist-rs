@@ -1,8 +1,7 @@
-use core::convert::From;
 use core::option::Option;
 use clap::{Args, Subcommand};
 
-use super::section_options::*;
+use super::comment_options::*;
 
 #[derive(Args,Debug)]
 pub struct Cli {
@@ -20,38 +19,37 @@ pub enum Action {
 }
 
 impl Cli {
-    pub async fn run(&self, client: &todoist::Client) {
+    pub async fn run(&self, client: &libtodoist::Client) {
         match self.action.clone() {
             Action::List(opts) => {
-                for section in client.section().list(opts.project_id).await {
-                    println!("{}", section);
+                for comment in client.comment().list(opts.into()).await {
+                    println!("{}", comment);
                 }
             }
             Action::New(opts) => {
-                match client.section().create(opts.into()).await {
-                    Ok(Some(task)) => { println!("{:#?}", task); },
+                match client.comment().create(opts.into()).await {
+                    Ok(Some(comment)) => { println!("{:#?}", comment); },
                     Ok(None) => { println!("something went wrong"); },
                     Err(err) => { println!("error: {}", err); },
                 }
             }
             Action::Show(opts) => {
-                match client.section().get(opts.id).await {
-                    Ok(Some(task)) => { println!("{:#?}", task); },
+                match client.comment().get(opts.id).await {
+                    Ok(Some(comment)) => { println!("{:#?}", comment); },
                     Ok(None) => println!("task not found"),
                     Err(err) => println!("{}", err),
                 }
             },
             Action::Update(opts) => {
-                match client.section().update(opts.id.clone(), opts.into()).await {
-                    Ok(Some(task)) => { println!("{:#?}", task); },
+                match client.comment().update(opts.id.clone(), opts.into()).await {
+                    Ok(Some(comment)) => { println!("{:#?}", comment); },
                     Ok(None) => { println!("something went wrong"); },
                     Err(err) => { println!("error: {}", err); },
                 }
             },
             Action::Delete(opts) => {
-                client.section().delete(opts.id).await;
+                client.comment().delete(opts.id).await;
             },
         }
     }
 }
-

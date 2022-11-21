@@ -20,11 +20,11 @@ pub struct Cli {
     action: GroupAction,
 
     #[clap(skip)]
-    client: todoist::Client,
+    client: libtodoist::Client,
 }
 
 impl Cli {
-    pub fn new(client: todoist::Client) -> Self {
+    pub fn new(client: libtodoist::Client) -> Self {
         let mut cli: Cli = Cli::parse();
 
         cli.set_client(client);
@@ -32,7 +32,7 @@ impl Cli {
         return cli
     }
 
-    fn set_client(&mut self, client: todoist::Client) {
+    fn set_client(&mut self, client: libtodoist::Client) {
         self.client = client
     }
 

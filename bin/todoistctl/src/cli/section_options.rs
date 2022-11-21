@@ -1,5 +1,5 @@
 use clap::Args;
-use todoist::api::section::{CreateRequest, UpdateRequest};
+use libtodoist::api::section::{CreateRequest, UpdateRequest};
 
 #[derive(Args,Debug,Clone)]
 pub struct ListOptions {

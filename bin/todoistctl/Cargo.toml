@@ -17,5 +17,5 @@ categories = ["data-structures", "web-programming::http-client"]
 clap = { version = "4.0.25", features = ["derive"] }
 confy = { version = "0.5.1", features = ["ron", "ron_conf"], default-features = false }
 serde = { version = "1.0.147", features = ["derive"] }
-libtodoist = { path = "../../lib/libtodoist/" }
+libtodoist = { path = "../../lib/libtodoist/", version = "0.2.0" }
 tokio = { version = "1.21.2", features = ["full"] }

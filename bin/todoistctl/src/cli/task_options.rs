@@ -12,6 +12,7 @@ pub struct ListOptions {
     pub label: Option<String>,
     #[clap(long)]
     pub filter: Option<String>,
+    /// IETF language tag defining what language filter is written in, if differs from default English.
     #[clap(long)]
     pub lang: Option<String>,
     #[clap(long)]
@@ -34,14 +35,19 @@ pub struct NewOptions {
     pub order: Option<i64>,
     #[clap(long)]
     pub labels: Vec<String>,
+    /// Task priority from 1 (normal) to 4 (urgent).
     #[clap(long)]
     pub priority: Option<Priority>,
+    /// Human defined task due date (ex.: "next Monday", "Tomorrow"). Value is set using local (not UTC) time.
     #[clap(long)]
     pub due_string: Option<String>,
+    /// Specific date in YYYY-MM-DD format relative to user’s timezone.
     #[clap(long)]
     pub due_date: Option<String>,
+    /// Specific date and time in RFC3339 format in UTC.
     #[clap(long)]
     pub due_datetime: Option<String>,
+    /// 2-letter code specifying language in case due_string is not written in English.
     #[clap(long)]
     pub due_lang: Option<String>,
     #[clap(long)]

@@ -29,7 +29,7 @@ impl Cli {
 
         cli.set_client(client);
 
-        return cli
+        cli
     }
 
     fn set_client(&mut self, client: libtodoist::Client) {
@@ -49,9 +49,9 @@ impl Cli {
 
 #[derive(Subcommand,Debug)]
 pub enum GroupAction {
-    Project(project::Cli),
-    Task(task::Cli),
-    Section(section::Cli),
-    Comment(comment::Cli),
+    Project(Box<project::Cli>),
+    Task(Box<task::Cli>),
+    Section(Box<section::Cli>),
+    Comment(Box<comment::Cli>),
     Label,
 }

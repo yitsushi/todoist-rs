@@ -26,7 +26,7 @@ impl Cli {
         match self.action.clone() {
             Action::List => {
                 for project in client.project().list().await {
-                    if let Some(_) = project.parent_id {
+                    if project.parent_id.is_some() {
                         println!("  - {}", project);
                     } else {
                         println!("{}", project);

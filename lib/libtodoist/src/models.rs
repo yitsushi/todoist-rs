@@ -3,9 +3,9 @@ use std::fmt::Display;
 use serde::{Serialize, Deserialize};
 use super::enums::*;
 
-const ICON_FAVORITE: &'static str = "★";
-const ICON_SHARED: &'static str = "⛹";
-const ICON_INBOX: &'static str = "✉ ";
+const ICON_FAVORITE: &str = "★";
+const ICON_SHARED: &str = "⛹";
+const ICON_INBOX: &str = "✉ ";
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Project {
@@ -25,9 +25,9 @@ pub struct Project {
 
 impl Display for Project {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let fav_icon = if self.is_favorite { ICON_FAVORITE } else { &"" };
-        let shared_icon = if self.is_shared { ICON_SHARED } else { &"" };
-        let inbox_icon = if self.is_inbox_project { ICON_INBOX } else { &"" };
+        let fav_icon = if self.is_favorite { ICON_FAVORITE } else { "" };
+        let shared_icon = if self.is_shared { ICON_SHARED } else { "" };
+        let inbox_icon = if self.is_inbox_project { ICON_INBOX } else { "" };
 
         write!(f, "{} [{}] {}{}{}", self.name, self.id, shared_icon, inbox_icon, fav_icon)
     }
@@ -52,6 +52,7 @@ pub struct Task {
     pub section_id: Option<String>,
     pub parent_id: Option<String>,
     pub url: String,
+    pub duraction: Option<Duration>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -61,6 +62,12 @@ pub struct Due {
     pub is_recurring: bool,
     pub string: String,
     pub timezone: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Duration {
+    pub amount: i64,
+    pub unit: DurationUnit,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

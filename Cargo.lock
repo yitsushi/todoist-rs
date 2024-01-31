@@ -413,7 +413,7 @@ checksum = "fc7fcc620a3bff7cdd7a365be3376c97191aeaccc2a603e600951e452615bf89"
 
 [[package]]
 name = "libtodoist"
-version = "0.3.0"
+version = "0.3.4"
 dependencies = [
  "reqwest",
  "serde",
@@ -925,7 +925,7 @@ checksum = "cda74da7e1a664f795bb1f8a87ec406fb89a02522cf6e50620d016add6dbbf5c"
 
 [[package]]
 name = "todoistctl"
-version = "0.3.3"
+version = "0.3.4"
 dependencies = [
  "clap",
  "confy",

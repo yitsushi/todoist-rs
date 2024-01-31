@@ -31,7 +31,7 @@ impl Client {
     }
 
     fn token(&self) -> String {
-        return self.api_token.clone()
+        self.api_token.clone()
     }
 
     fn v2(&self, path: String) -> String {

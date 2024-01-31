@@ -8,10 +8,10 @@ macro_rules! endpoint_group {
     () => {
         #[derive(Clone, Copy)]
         pub struct Client<'a> {
-            api_client: &'a crate::Client,
+            api_client: &'a $crate::Client,
         }
 
-        pub fn new<'a>(api_client: &'a crate::Client) -> Client<'a> {
+        pub fn new(api_client: &$crate::Client) -> Client<'_> {
             Client { api_client }
         }
     };

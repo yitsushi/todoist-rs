@@ -1,6 +1,7 @@
 use core::result::Result;
 use serde::{Serialize, Deserialize};
 use serde_repr::{Serialize_repr, Deserialize_repr};
+use core::fmt;
 
 macro_rules! imp_from_str {
     ($name:ident) => {
@@ -20,18 +21,21 @@ macro_rules! imp_from_str {
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
-pub enum ViewStyle { List, Board }
+pub enum ViewStyle { List, Board, Calendar }
+
+impl fmt::Display for ViewStyle {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            ViewStyle::List => write!(f, "list"),
+            ViewStyle::Board => write!(f, "board"),
+            ViewStyle::Calendar => write!(f, "calendar"),
+        }
+    }
+}
 
 impl ViewStyle {
-    pub fn to_string(&self) -> String {
-        String::from(match self {
-            ViewStyle::List => "list",
-            ViewStyle::Board => "board",
-        })
-    }
-
     pub fn variants() -> Vec<&'static str> {
-        return vec!["list", "board"]
+        vec!["list", "board", "calendar"]
     }
 
     fn from_str(s: &str) -> Option<Self> {
@@ -59,34 +63,36 @@ pub enum Color {
     Yellow,
 }
 
-impl Color {
-    pub fn to_string(&self) -> String {
-        String::from(match self {
-            Color::BerryRed => "berry_red",
-            Color::Blue => "blue",
-            Color::Charcoal => "charcoal",
-            Color::Grape => "grape",
-            Color::Green => "green",
-            Color::Grey => "grey",
-            Color::Lavender => "lavender",
-            Color::LightBlue => "light_blue",
-            Color::LimeGreen => "lime_green",
-            Color::Magenta => "magenta",
-            Color::MintGreen => "mint_green",
-            Color::OliveGreen => "olive_green",
-            Color::Orange => "orange",
-            Color::Red => "red",
-            Color::Salmon => "salmon",
-            Color::SkyBlue => "sky_blue",
-            Color::Taupe => "taupe",
-            Color::Teal => "teal",
-            Color::Violet => "violet",
-            Color::Yellow => "yellow",
-        })
+impl fmt::Display for Color {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Color::BerryRed => write!(f, "berry_red"),
+            Color::Blue => write!(f, "blue"),
+            Color::Charcoal => write!(f, "charcoal"),
+            Color::Grape => write!(f, "grape"),
+            Color::Green => write!(f, "green"),
+            Color::Grey => write!(f, "grey"),
+            Color::Lavender => write!(f, "lavender"),
+            Color::LightBlue => write!(f, "light_blue"),
+            Color::LimeGreen => write!(f, "lime_green"),
+            Color::Magenta => write!(f, "magenta"),
+            Color::MintGreen => write!(f, "mint_green"),
+            Color::OliveGreen => write!(f, "olive_green"),
+            Color::Orange => write!(f, "orange"),
+            Color::Red => write!(f, "red"),
+            Color::Salmon => write!(f, "salmon"),
+            Color::SkyBlue => write!(f, "sky_blue"),
+            Color::Taupe => write!(f, "taupe"),
+            Color::Teal => write!(f, "teal"),
+            Color::Violet => write!(f, "violet"),
+            Color::Yellow => write!(f, "yellow"),
+        }
     }
+}
 
+impl Color {
     pub fn variants() -> Vec<&'static str> {
-        return vec![
+        vec![
             "berry_red",
             "blue",
             "charcoal",
@@ -158,9 +164,13 @@ impl Priority {
     }
 
     pub fn variants() -> Vec<&'static str> {
-        return vec!["low", "normal", "high", "urgent"]
+        vec!["low", "normal", "high", "urgent"]
     }
 }
+
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[serde(rename_all = "snake_case")]
+pub enum DurationUnit { Minute, Hour }
 
 imp_from_str!(ViewStyle);
 imp_from_str!(Color);

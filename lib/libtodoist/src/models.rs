@@ -64,6 +64,18 @@ pub struct Due {
     pub timezone: Option<String>,
 }
 
+impl std::fmt::Display for Due {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(value) = &self.datetime {
+            write!(f, "{}", value)
+        } else if let Some(value) = &self.date {
+            write!(f, "{}", value)
+        } else {
+            write!(f, "")
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Duration {
     pub amount: i64,

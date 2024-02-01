@@ -26,7 +26,11 @@ impl Cli {
         match self.action.clone() {
             Action::List(opts) => {
                 for task in client.task().list(opts.into()).await {
-                    println!("[project:{}] <{}> {}", task.project_id.unwrap(), task.id, task.content);
+                    if let Some(due) = task.due {
+                        println!("[project:{}] <{}> (due: {}) {}", task.project_id.unwrap(), task.id, due, task.content);
+                    } else {
+                        println!("[project:{}] <{}> (due: none) {}", task.project_id.unwrap(), task.id, task.content);
+                    }
                 }
             }
             Action::New(opts) => {

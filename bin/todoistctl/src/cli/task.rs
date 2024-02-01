@@ -25,11 +25,17 @@ impl Cli {
     pub async fn run(&self, client: &libtodoist::Client) {
         match self.action.clone() {
             Action::List(opts) => {
-                for task in client.task().list(opts.into()).await {
-                    if let Some(due) = task.due {
-                        println!("[project:{}] <{}> (due: {}) {}", task.project_id.unwrap(), task.id, due, task.content);
+                for task in client.task().list(opts.clone().into()).await {
+                    let due = if let Some(value) = &task.due {
+                        format!("{}", value)
                     } else {
-                        println!("[project:{}] <{}> (due: none) {}", task.project_id.unwrap(), task.id, task.content);
+                        String::from("none")
+                    };
+
+                    if opts.with_description {
+                        println!("[project:{}] <{}> (due: {}) {} -> {}", task.project_id.unwrap(), task.id, due, task.content, task.description);
+                    } else {
+                        println!("[project:{}] <{}> (due: {}) {}", task.project_id.unwrap(), task.id, due, task.content);
                     }
                 }
             }

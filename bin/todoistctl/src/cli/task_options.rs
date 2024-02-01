@@ -17,6 +17,8 @@ pub struct ListOptions {
     pub lang: Option<String>,
     #[clap(long)]
     pub ids: Option<String>,
+    #[clap(long)]
+    pub with_description: bool,
 }
 
 #[derive(Args,Debug,Clone)]

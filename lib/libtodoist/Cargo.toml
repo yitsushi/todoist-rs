@@ -1,6 +1,6 @@
 [package]
 name = "libtodoist"
-version = "0.3.6"
+version = "0.3.7"
 edition = "2021"
 authors = ["Balazs Nadasdi <efertone@pm.me>"]
 license = "Apache-2.0 AND MIT"

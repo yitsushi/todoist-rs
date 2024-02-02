@@ -45,7 +45,7 @@ impl Client<'_> {
             Ok(None) => { println!("no content"); Ok(None) },
             Ok(Some(text)) => {
                 match serde_json::from_str(&text) {
-                    Ok(proj) => Ok(Some(proj)),
+                    Ok(section) => Ok(Some(section)),
                     Err(_) => Err(Error::ParseError("unable to parse response".to_string()))
                 }
             }
@@ -58,7 +58,7 @@ impl Client<'_> {
             Ok(None) => { println!("no content"); Ok(None) },
             Ok(Some(text)) => {
                 match serde_json::from_str(&text) {
-                    Ok(proj) => Ok(Some(proj)),
+                    Ok(section) => Ok(Some(section)),
                     Err(_) => Err(Error::ParseError("unable to parse response".to_string()))
                 }
             }

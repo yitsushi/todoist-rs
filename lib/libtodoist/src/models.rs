@@ -147,3 +147,12 @@ impl Display for Section {
         write!(f, "[{}] <project:{}> {}", self.id, self.project_id, self.name)
     }
 }
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Label {
+    pub id: String,
+    pub name: String,
+    pub color: Color,
+    pub order: i64,
+    pub is_favorite: bool,
+}

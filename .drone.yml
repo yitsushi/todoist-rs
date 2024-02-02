@@ -1,0 +1,17 @@
+---
+kind: pipeline
+type: docker
+name: Quality Check
+
+steps:
+  - name: test
+    image: rust:1.74
+    commands:
+      - cargo build --verbose --all
+      - cargo test --verbose --all
+
+
+  - name: clippy
+    image: rust:1.74
+    commands:
+      - cargo clippy -- -Dwarnings

@@ -546,7 +546,7 @@ checksum = "9c198f91728a82281a64e1f4f9eeb25d82cb32a5de251c6bd1b5154d63a8e7bd"
 
 [[package]]
 name = "libtodoist"
-version = "0.3.7"
+version = "0.4.0"
 dependencies = [
  "mockito",
  "reqwest",
@@ -1255,7 +1255,7 @@ checksum = "cda74da7e1a664f795bb1f8a87ec406fb89a02522cf6e50620d016add6dbbf5c"
 
 [[package]]
 name = "todoistctl"
-version = "0.3.7"
+version = "0.4.0"
 dependencies = [
  "clap",
  "confy",

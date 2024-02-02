@@ -4,14 +4,21 @@ type: docker
 name: Quality Check
 
 steps:
-  - name: test
+  - name: build
     image: rust:1.74
     commands:
       - cargo build --verbose --all
-      - cargo test --verbose --all
 
+  - name: test
+    image: rust:1.74
+    commands:
+      - cargo test --verbose --all
 
   - name: clippy
     image: rust:1.74
     commands:
+      - rustup component add clippy
       - cargo clippy -- -Dwarnings
+    depends_on:
+      - build
+      - test

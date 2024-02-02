@@ -23,5 +23,10 @@ echo ""
 echo "Press ^C to exit or any key to continue..."
 read
 
-cargo publish -p todoistctl
-cargo publish -p libtodoist
+if [[ "${1}" = "" ]]; then
+  cargo publish --package todoistctl
+  cargo publish --package libtodoist
+else
+  cargo publish --registry "${1}" --package todoistctl
+  cargo publish --registry "${1}" --package libtodoist
+fi

@@ -9,6 +9,9 @@ use serde::Serialize;
 use error::Error;
 use api::{project, comment, section, task};
 
+use api::label::personal as label_personal;
+use api::label::shared as label_shared;
+
 macro_rules! endpoint_fn {
     ($name:ident) => {
         pub fn $name(&self) -> $name::Client {
@@ -87,8 +90,10 @@ impl Client {
         self.send(request).await
     }
 
-    endpoint_fn!(project);
     endpoint_fn!(comment);
+    endpoint_fn!(label_personal);
+    endpoint_fn!(label_shared);
+    endpoint_fn!(project);
     endpoint_fn!(section);
     endpoint_fn!(task);
 }

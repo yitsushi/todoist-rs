@@ -7,15 +7,13 @@ use crate::{models, EmptyQuery};
 crate::endpoint_group!();
 
 impl Client<'_> {
-    pub async fn list(&self, params: ListRequest) -> Vec<models::Task> {
+    pub async fn list(&self, params: ListRequest) -> Result<Vec<models::Task>, Error> {
         match self.api_client.get("/tasks".to_string(), &params).await {
-            Err(err) => { println!("{}", err); vec![] },
-            Ok(None) => { println!("no content"); vec![] },
-            Ok(Some(text)) => {
-                match serde_json::from_str(&text) {
-                    Ok(projects) => projects,
-                    Err(err) => { println!("{}", err); vec![] },
-                }
+            Err(err) => Err(Error::RequestError(err.to_string())),
+            Ok(None) => Ok(vec![]),
+            Ok(Some(text)) => match serde_json::from_str(&text) {
+                Ok(projects) => Ok(projects),
+                Err(err) => Err(Error::ParseError(err.to_string())),
             },
         }
     }
@@ -23,12 +21,10 @@ impl Client<'_> {
     pub async fn get(&self, id: String) -> Result<Option<models::Task>, Error> {
         match self.api_client.get(format!("/tasks/{}", id), &EmptyQuery{}).await {
             Err(err) => Err(Error::RequestError(err.to_string())),
-            Ok(None) => { println!("no content"); Ok(None) },
-            Ok(Some(text)) => {
-                match serde_json::from_str(&text) {
-                    Ok(task) => Ok(Some(task)),
-                    Err(_) => Err(Error::ParseError("unable to parse response".to_string()))
-                }
+            Ok(None) => Ok(None),
+            Ok(Some(text)) => match serde_json::from_str(&text) {
+                Ok(task) => Ok(Some(task)),
+                Err(err) => Err(Error::ParseError(err.to_string()))
             }
         }
     }
@@ -36,26 +32,22 @@ impl Client<'_> {
     pub async fn create(&self, request: CreateRequest) -> Result<Option<models::Task>, Error> {
         match self.api_client.post("/tasks".to_string(), request).await {
             Err(err) => Err(Error::RequestError(err.to_string())),
-            Ok(None) => { println!("no content"); Ok(None) },
-            Ok(Some(text)) => {
-                match serde_json::from_str(&text) {
-                    Ok(task) => Ok(Some(task)),
-                    Err(_) => Err(Error::ParseError("unable to parse response".to_string()))
-                }
-            }
+            Ok(None) => Ok(None),
+            Ok(Some(text)) => match serde_json::from_str(&text) {
+                Ok(task) => Ok(Some(task)),
+                Err(err) => Err(Error::ParseError(err.to_string()))
+            },
         }
     }
 
     pub async fn update(&self, id: String, request: UpdateRequest) -> Result<Option<models::Task>, Error> {
         match self.api_client.post(format!("/tasks/{}", id), request).await {
             Err(err) => Err(Error::RequestError(err.to_string())),
-            Ok(None) => { println!("no content"); Ok(None) },
-            Ok(Some(text)) => {
-                match serde_json::from_str(&text) {
-                    Ok(task) => Ok(Some(task)),
-                    Err(_) => Err(Error::ParseError("unable to parse response".to_string()))
-                }
-            }
+            Ok(None) => Ok(None),
+            Ok(Some(text)) => match serde_json::from_str(&text) {
+                Ok(task) => Ok(Some(task)),
+                Err(err) => Err(Error::ParseError(err.to_string()))
+            },
         }
     }
 

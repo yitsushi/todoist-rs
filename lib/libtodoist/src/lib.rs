@@ -26,19 +26,28 @@ pub struct EmptyQuery {}
 #[derive(Default)]
 pub struct Client {
     api_token: String,
+    base_url: String,
 }
 
 impl Client {
     pub fn new(api_token: String) -> Self {
-        Self{ api_token }
+        Self{ api_token, base_url: "https://api.todoist.com/rest/v2".to_string() }
+    }
+
+    pub fn new_with_base_url(api_token: String, base_url: String) -> Self {
+        Self{ api_token, base_url }
     }
 
     fn token(&self) -> String {
         self.api_token.clone()
     }
 
+    fn client(&self) -> reqwest::Client {
+        reqwest::Client::new()
+    }
+
     fn v2(&self, path: String) -> String {
-        format!("https://api.todoist.com/rest/v2{}", path)
+        format!("{}{}", self.base_url, path)
     }
 
     async fn send(&self, request: RequestBuilder) -> Result<Option<String>, Error> {
@@ -67,15 +76,13 @@ impl Client {
     }
 
     pub async fn get<T: Serialize>(&self, path: String, query: &T) -> Result<Option<String>, Error> {
-        let client = reqwest::Client::new();
-        let request = client.get(self.v2(path)).query(query);
+        let request = self.client().get(self.v2(path)).query(query);
 
         self.send(request).await
     }
 
     pub async fn post<T: Serialize>(&self, path: String, data: T) -> Result<Option<String>, Error> {
-        let client = reqwest::Client::new();
-        let request = client.post(self.v2(path))
+        let request = self.client().post(self.v2(path))
             .header(reqwest::header::CONTENT_TYPE, "application/json")
             .body(serde_json::to_string(&data).unwrap());
 
@@ -83,8 +90,7 @@ impl Client {
     }
 
     pub async fn delete(&self, path: String) -> Result<Option<String>, Error> {
-        let client = reqwest::Client::new();
-        let request = client.delete(self.v2(path))
+        let request = self.client().delete(self.v2(path))
             .header(reqwest::header::CONTENT_TYPE, "application/json");
 
         self.send(request).await

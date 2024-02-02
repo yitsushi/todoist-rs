@@ -24,9 +24,9 @@ echo "Press ^C to exit or any key to continue..."
 read
 
 if [[ "${1}" = "" ]]; then
-  cargo publish --package todoistctl
   cargo publish --package libtodoist
+  cargo publish --package todoistctl
 else
-  cargo publish --registry "${1}" --package todoistctl
   cargo publish --registry "${1}" --package libtodoist
+  cargo publish --registry "${1}" --package todoistctl
 fi

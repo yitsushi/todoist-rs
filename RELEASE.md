@@ -15,7 +15,7 @@ Later it may change, but for now they always match.
     - `bin/todoistctl/Cargo.toml`
     - `lib/libtodoist/Cargo.toml`
 
-2. Make sure `Cargo.lock` is up-to-date
+2. Make sure `Cargo.lock` is up-to-date (like run `cargo check`).
 3. Commit changes.
 4. Create a new tag.
     ```

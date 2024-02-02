@@ -23,8 +23,13 @@ impl Cli {
     pub async fn run(&self, client: &libtodoist::Client) {
         match self.action.clone() {
             Action::List(opts) => {
-                for section in client.section().list(opts.project_id).await {
-                    println!("{}", section);
+                match client.section().list(opts.project_id).await {
+                    Err(err) => println!(" -- [ERROR] {}", err),
+                    Ok(sections) => {
+                        for section in sections {
+                            println!("{}", section);
+                        }
+                    },
                 }
             }
             Action::New(opts) => {

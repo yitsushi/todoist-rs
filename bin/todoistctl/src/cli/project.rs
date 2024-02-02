@@ -25,12 +25,16 @@ impl Cli {
     pub async fn run(&self, client: &libtodoist::Client) {
         match self.action.clone() {
             Action::List => {
-                for project in client.project().list().await {
-                    if project.parent_id.is_some() {
-                        println!("  - {}", project);
-                    } else {
-                        println!("{}", project);
-                    }
+                match client.project().list().await {
+                    Err(err) => println!(" -- [ERROR] {}", err),
+                    Ok(projects) =>
+                        for project in projects {
+                            if project.parent_id.is_some() {
+                                println!("  - {}", project);
+                            } else {
+                                println!("{}", project);
+                            }
+                        }
                 }
             }
             Action::Delete(opts) => {

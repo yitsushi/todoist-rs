@@ -22,8 +22,12 @@ impl Cli {
     pub async fn run(&self, client: &libtodoist::Client) {
         match self.action.clone() {
             Action::List(opts) => {
-                for comment in client.comment().list(opts.into()).await {
-                    println!("{}", comment);
+                match client.comment().list(opts.into()).await {
+                    Err(err) => println!(" -- [ERROR] {}", err),
+                    Ok(comments) =>
+                        for comment in comments {
+                            println!("{}", comment);
+                        }
                 }
             }
             Action::New(opts) => {
